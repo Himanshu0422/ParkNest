@@ -13,6 +13,11 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "tsc": {
+      "dependsOn": ["^tsc"],
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
+      "outputs": []
+    },
     "dev": {
       "cache": false,
       "persistent": true
