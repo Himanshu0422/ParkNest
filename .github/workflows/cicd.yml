@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Run Formatting, Linting, Type Checking, and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Check Formatting with Prettier
+        run: yarn format
+
+      - name: Check Linting with ESLint
+        run: yarn lint
+
+      - name: Type Check with TypeScript
+        run: yarn tsc
+
+      - name: Build your Project
+        run: yarn build
