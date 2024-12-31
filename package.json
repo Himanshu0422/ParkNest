@@ -7,7 +7,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "tsc": "turbo run tsc",
-    "validate": "yarn format && yarn lint && yarn tsc && yarn build",
+    "validate": "yarn cache clean && yarn format && yarn lint --no-cache && yarn tsc --force && yarn build",
     "prepare": "husky install"
   },
   "devDependencies": {

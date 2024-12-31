@@ -4,11 +4,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
-import { Reflector } from '@nestjs/core';
-import { Role } from 'src/common/types';
 import { PrismaService } from 'src/common/prisma/prisma.service';
+import { Role } from 'src/common/types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -51,7 +51,6 @@ export class AuthGuard implements CanActivate {
         );
       }
 
-      console.log('jwt payload: ', payload);
       req.user = payload;
     } catch (err) {
       console.error('Token validation error:', err);
@@ -88,11 +87,21 @@ export class AuthGuard implements CanActivate {
   private async getUserRoles(uid: string): Promise<Role[]> {
     const roles: Role[] = [];
 
-    const [admin] = await Promise.all([
+    const [admin, manager, valet] = await Promise.all([
       this.prisma.admin.findUnique({ where: { uid } }),
+      this.prisma.manager.findUnique({ where: { uid } }),
+      this.prisma.valet.findUnique({ where: { uid } }),
     ]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    admin && roles.push('admin');
+
+    if (admin) {
+      roles.push('admin');
+    }
+    if (manager) {
+      roles.push('manager');
+    }
+    if (valet) {
+      roles.push('valet');
+    }
 
     return roles;
   }
