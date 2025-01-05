@@ -10,6 +10,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@parknest/util": "*",
     "@parknest/ui": "*",
     "@parknest/network": "*",
     "@parknest/sample-package": "*",
