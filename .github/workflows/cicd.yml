@@ -7,7 +7,65 @@ on:
 
 jobs:
   ci:
-    name: Run Formatting, Linting, Type Checking, and Build
+    name: Full CI Process
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate Prisma Client
+        run: yarn postinstall
+
+      - name: Wait for PostgreSQL to be ready
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+        run: |
+          until pg_isready; do
+            echo "Waiting for PostgreSQL...";
+            sleep 2;
+          done
+
+      - name: Apply Database Migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+        run: npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
+
+      - name: Build Project
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+        run: yarn build
+
+  checks:
+    name: Run Checks
     runs-on: ubuntu-latest
 
     steps:
@@ -17,14 +75,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: 18
           cache: yarn
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Generate Prisma Client
-        run: npx prisma generate --schema=apps/api/prisma/schema.prisma
 
       - name: Check Formatting with Prettier
         run: yarn format
@@ -34,6 +89,3 @@ jobs:
 
       - name: Type Check with TypeScript
         run: yarn tsc
-
-      - name: Build your Project
-        run: yarn build
