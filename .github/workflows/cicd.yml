@@ -58,12 +58,6 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
         run: npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
 
-      - name: Build Project
-        env:
-          NEXT_PUBLIC_API_URL: http://localhost:3000
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
-        run: yarn build
-
       - name: Check Formatting with Prettier
         run: yarn format
 
@@ -72,3 +66,9 @@ jobs:
 
       - name: Type Check with TypeScript
         run: yarn tsc
+
+      - name: Build Project
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3000
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+        run: yarn build
