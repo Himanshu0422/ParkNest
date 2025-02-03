@@ -12,10 +12,10 @@
     "postinstall": "npx prisma generate --schema=apps/api/prisma/schema.prisma"
   },
   "devDependencies": {
+    "husky": "^8.0.0",
     "prettier": "^3.2.5",
-    "turbo": "^2.3.3",
-    "typescript": "^5.7.2",
-    "husky": "^8.0.0"
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=18"
