@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx"
   },
   "exclude": ["node_modules"]
 }
