@@ -36,7 +36,7 @@ import { VerificationsModule } from './models/verifications/verifications.module
       fieldResolverEnhancers: ['guards'],
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       buildSchemaOptions: {
-        numberScalarMode: 'integer',
+        // numberScalarMode: 'integer',
       },
     }),
     PrismaModule,
