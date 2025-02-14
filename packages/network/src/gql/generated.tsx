@@ -37,8 +37,8 @@ export type Address = {
   garage?: Maybe<Garage>;
   garageId?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["Int"]["output"];
-  lat: Scalars["Int"]["output"];
-  lng: Scalars["Int"]["output"];
+  lat: Scalars["Float"]["output"];
+  lng: Scalars["Float"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
 };
 
