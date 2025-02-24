@@ -38,7 +38,7 @@ export class SlotWhereInputStrict
   length: IntFilter;
   width: IntFilter;
   height: IntFilter;
-  @Field(() => $Enums.SlotType)
+  // @Field(() => $Enums.SlotType)
   type: EnumSlotTypeFilter;
   garageId: IntFilter;
   Garage: GarageRelationFilter;

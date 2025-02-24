@@ -5,14 +5,13 @@ import { useEffect } from "react";
 import { GarageMarker } from "./GarageMarker";
 
 export const ShowGarages = () => {
-  const [searchGarages, { loading, data, error }] = useLazyQuery(
-    SearchGaragesDocument,
-  );
-  console.log(error, data, loading);
+  const [searchGarages, { data }] = useLazyQuery(SearchGaragesDocument, {
+    fetchPolicy: "network-only",
+  });
 
   const { variables } = useConvertSearchFormToVariables();
-
   useEffect(() => {
+    console.log(variables);
     if (variables)
       searchGarages({
         variables,

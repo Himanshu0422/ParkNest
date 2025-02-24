@@ -134,7 +134,6 @@ type Garage {
 }
 
 input SlotWhereInput {
-  type: SlotType
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -143,19 +142,13 @@ input SlotWhereInput {
   length: IntFilter
   width: IntFilter
   height: IntFilter
+  type: EnumSlotTypeFilter
   garageId: IntFilter
   Garage: GarageRelationFilter
   Bookings: BookingListRelationFilter
   AND: [SlotWhereInput!]
   OR: [SlotWhereInput!]
   NOT: [SlotWhereInput!]
-}
-
-enum SlotType {
-  CAR
-  HEAVY
-  BIKE
-  BICYCLE
 }
 
 input IntFilter {
@@ -203,6 +196,20 @@ input FloatFilter {
   gt: Float
   gte: Float
   not: Float
+}
+
+input EnumSlotTypeFilter {
+  equals: SlotType
+  in: [SlotType!]
+  notIn: [SlotType!]
+  not: SlotType
+}
+
+enum SlotType {
+  CAR
+  HEAVY
+  BIKE
+  BICYCLE
 }
 
 input GarageRelationFilter {
