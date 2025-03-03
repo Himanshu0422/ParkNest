@@ -2,122 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Admin {
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User
-  verifications: [Verification!]!
-  verificationsCount: Float!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Customer {
-  displayName: String
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: User
-  bookings: [Booking!]
-}
-
-type Manager {
-  displayName: String
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  companyId: Float!
-  company: Company
-}
-
-type Valet {
-  image: String
-  companyId: Float
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  displayName: String!
-  licenceID: String!
-}
-
-type User {
-  name: String
-  image: String
-  uid: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  admin: Admin
-  manager: Manager
-  valet: Valet
-  customer: Customer
-}
-
-type AuthProvider {
-  type: AuthProviderType!
-  uid: String!
-}
-
-enum AuthProviderType {
-  GOOGLE
-  CREDENTIALS
-}
-
-type LoginOutput {
-  token: String!
-  user: User!
-}
-
-type Verification {
-  createdAt: DateTime!
-  garageId: Float!
-  updatedAt: DateTime!
-  verified: Boolean!
-  adminId: String!
-}
-
-type Booking {
-  pricePerHour: Float
-  totalPrice: Float
-  phoneNumber: String
-  passcode: String
-  status: BookingStatus!
-  id: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  startTime: DateTime!
-  endTime: DateTime!
-  vehicleNumber: String!
-  slotId: Float!
-  customerId: String!
-  slot: Slot!
-  customer: Customer!
-  valetAssignment: ValetAssignment
-}
-
-enum BookingStatus {
-  BOOKED
-  VALET_ASSIGNED_FOR_CHECK_IN
-  VALET_PICKED_UP
-  CHECKED_IN
-  VALET_ASSIGNED_FOR_CHECK_OUT
-  CHECKED_OUT
-  VALET_RETURNED
-}
-
-type Company {
-  displayName: String
-  description: String
-  id: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  garages: [Garage!]!
-  managers: [Manager!]!
-}
-
 type Garage {
   description: String
   displayName: String
@@ -132,6 +16,11 @@ type Garage {
   address: Address
   slots: [Slot!]!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 input SlotWhereInput {
   id: IntFilter
@@ -354,6 +243,16 @@ input BookingWhereInput {
   NOT: [BookingWhereInput!]
 }
 
+enum BookingStatus {
+  BOOKED
+  VALET_ASSIGNED_FOR_CHECK_IN
+  VALET_PICKED_UP
+  CHECKED_IN
+  VALET_ASSIGNED_FOR_CHECK_OUT
+  CHECKED_OUT
+  VALET_RETURNED
+}
+
 input ValetAssignmentRelationFilter {
   is: ValetAssignmentWhereInput
   isNot: ValetAssignmentWhereInput
@@ -555,6 +454,63 @@ type Address {
   garage: Garage
 }
 
+type User {
+  name: String
+  image: String
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  admin: Admin
+  manager: Manager
+  valet: Valet
+  customer: Customer
+}
+
+type AuthProvider {
+  type: AuthProviderType!
+  uid: String!
+}
+
+enum AuthProviderType {
+  GOOGLE
+  CREDENTIALS
+}
+
+type Verification {
+  createdAt: DateTime!
+  garageId: Float!
+  updatedAt: DateTime!
+  verified: Boolean!
+  adminId: String!
+}
+
+type Admin {
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User
+  verifications: [Verification!]!
+  verificationsCount: Float!
+}
+
+type BookingTimeline {
+  status: BookingStatus!
+  valetId: String
+  managerId: String
+  id: Float!
+  timestamp: DateTime!
+  bookingId: Float!
+}
+
+type Customer {
+  displayName: String
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User
+  bookings: [Booking!]
+}
+
 type Slot {
   displayName: String
   length: Float
@@ -568,12 +524,6 @@ type Slot {
   garageId: Float!
   garage: Garage!
   bookings: [Booking!]!
-}
-
-type MinimalSlotGroupBy {
-  type: SlotType!
-  pricePerHour: Float!
-  count: Float!
 }
 
 type ValetAssignment {
@@ -590,13 +540,48 @@ type ValetAssignment {
   returnValet: Valet
 }
 
-type BookingTimeline {
+type Booking {
+  pricePerHour: Float
+  totalPrice: Float
+  phoneNumber: String
+  passcode: String
   status: BookingStatus!
-  valetId: String
-  managerId: String
   id: Float!
-  timestamp: DateTime!
-  bookingId: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  startTime: DateTime!
+  endTime: DateTime!
+  vehicleNumber: String!
+  slotId: Float!
+  customerId: String!
+  slot: Slot!
+  customer: Customer!
+  valetAssignment: ValetAssignment
+}
+
+type Manager {
+  displayName: String
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  companyId: Float!
+  company: Company
+}
+
+type Company {
+  displayName: String
+  description: String
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  garages: [Garage!]!
+  managers: [Manager!]!
+}
+
+type MinimalSlotGroupBy {
+  type: SlotType!
+  pricePerHour: Float!
+  count: Float!
 }
 
 type Review {
@@ -607,6 +592,21 @@ type Review {
   rating: Float!
   customerId: String!
   garageId: Float!
+}
+
+type Valet {
+  image: String
+  companyId: Float
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  displayName: String!
+  licenceID: String!
+}
+
+type LoginOutput {
+  token: String!
+  user: User!
 }
 
 type Query {
@@ -1244,29 +1244,27 @@ input UpdateSlotInput {
 }
 
 input CreateBookingInput {
-  pricePerHour: Float
-  totalPrice: Float
   phoneNumber: String
-  passcode: String
-  status: BookingStatus!
   startTime: DateTime!
   endTime: DateTime!
   vehicleNumber: String!
-  slotId: Float!
   customerId: String!
+  type: SlotType!
+  pricePerHour: Float
+  totalPrice: Float
+  garageId: Float!
 }
 
 input UpdateBookingInput {
-  pricePerHour: Float
-  totalPrice: Float
   phoneNumber: String
-  passcode: String
-  status: BookingStatus
   startTime: DateTime
   endTime: DateTime
   vehicleNumber: String
-  slotId: Float
   customerId: String
+  type: SlotType
+  pricePerHour: Float
+  totalPrice: Float
+  garageId: Float
   id: Float!
 }
 
