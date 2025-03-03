@@ -17,6 +17,7 @@
     "@parknest/forms": "*",
     "@parknest/network": "*",
     "@parknest/util": "*",
+    "@stripe/stripe-js": "^5.7.0",
     "@tabler/icons-react": "^3.26.0",
     "mapbox-gl": "^3.9.4",
     "next": "15.1.3",
