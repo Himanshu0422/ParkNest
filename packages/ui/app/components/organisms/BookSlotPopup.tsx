@@ -22,6 +22,7 @@ import { CostTitleValue } from "../molecules/CostTileValue";
 import { DateRangeBookingInfo } from "../molecules/DateRangeBookingInfo";
 import { IconTypes } from "../molecules/IconTypes";
 import { AutoImageChanger } from "./AutoImageChanger";
+import { ManageValets } from "./ManageValets";
 
 export const BookSlotPopup = ({
   garage,
@@ -189,6 +190,7 @@ export const BookSlotPopup = ({
         <HtmlLabel title="Phone number" error={errors.phoneNumber?.message}>
           <HtmlInput placeholder="+910000000000" {...register("phoneNumber")} />
         </HtmlLabel>
+        <ManageValets garage={garage} />
 
         {totalPriceObj ? (
           <div className="mt-4">

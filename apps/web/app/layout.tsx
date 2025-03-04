@@ -1,6 +1,7 @@
 import { ApolloProvider } from "@parknest/network/src/config/apollo";
 import { SessionProvider } from "@parknest/ui/app/components/molecules/SessionProvider";
 import { Header } from "@parknest/ui/app/components/organisms/Header";
+import { ToastContainer } from "@parknest/ui/app/components/molecules/Toast";
 import "@parknest/ui/app/globals.css";
 import { MenuItem } from "@parknest/util/types";
 import type { Metadata } from "next";
@@ -41,6 +42,7 @@ export default function RootLayout({
           >
             <Header menuItems={MENUITEMS} />
             {children}
+            <ToastContainer />
           </body>
         </ApolloProvider>
       </SessionProvider>
