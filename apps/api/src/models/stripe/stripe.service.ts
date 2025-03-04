@@ -35,7 +35,7 @@ export default class StripeService {
         })),
       mode: 'payment',
       success_url: process.env.STRIPE_SUCCESS_URL,
-      cancel_url: process.env.x,
+      cancel_url: process.env.STRIPE_CANCEL_URL,
       metadata: {
         uid,
         bookingData: JSON.stringify(bookingData),
