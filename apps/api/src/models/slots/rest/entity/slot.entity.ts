@@ -1,3 +1,4 @@
+import { ObjectType } from '@nestjs/graphql';
 import { $Enums, Slot } from '@prisma/client';
 import { IsOptional } from 'class-validator';
 import { RestrictProperties } from 'src/common/dtos/common.input';
@@ -17,4 +18,9 @@ export class SlotEntity implements RestrictProperties<SlotEntity, Slot> {
   height: number;
   type: $Enums.SlotType;
   garageId: number;
+}
+
+@ObjectType()
+export class ReturnCount {
+  count: number;
 }
