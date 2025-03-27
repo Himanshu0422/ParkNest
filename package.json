@@ -7,7 +7,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "tsc": "turbo run tsc",
-    "validate": "yarn cache clean && yarn format && yarn lint --no-cache && yarn tsc --force && yarn build",
+    "validate": "yarn format && yarn lint --no-cache && yarn tsc --force && yarn build",
     "prepare": "husky install",
     "postinstall": "npx prisma generate --schema=apps/api/prisma/schema.prisma"
   },
