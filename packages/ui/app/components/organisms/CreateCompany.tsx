@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation } from "@apollo/client";
 import { useFormCreateCompany } from "@parknest/forms/src/createCompany";
 import {

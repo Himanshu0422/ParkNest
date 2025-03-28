@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import { MyCompanyDocument } from "@parknest/network/src/gql/generated";
 import { ReactNode } from "react";
