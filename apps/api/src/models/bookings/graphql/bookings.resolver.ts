@@ -8,8 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator';
 import { checkRowLevelPermission } from 'src/common/auth/util';
+import { AggregateCountOutput } from 'src/common/dtos/common.input';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { GetUserType } from 'src/common/types';
+import { BookingTimeline } from 'src/models/booking-timelines/graphql/entity/booking-timeline.entity';
 import { Customer } from 'src/models/customers/graphql/entity/customer.entity';
 import { Slot } from 'src/models/slots/graphql/entity/slot.entity';
 import { ValetAssignment } from 'src/models/valet-assignments/graphql/entity/valet-assignment.entity';
@@ -17,9 +19,8 @@ import { BookingsService } from './bookings.service';
 import { CreateBookingInput } from './dtos/create-booking.input';
 import { FindManyBookingArgs, FindUniqueBookingArgs } from './dtos/find.args';
 import { UpdateBookingInput } from './dtos/update-booking.input';
-import { Booking } from './entity/booking.entity';
-import { AggregateCountOutput } from 'src/common/dtos/common.input';
 import { BookingWhereInput } from './dtos/where.args';
+import { Booking } from './entity/booking.entity';
 @Resolver(() => Booking)
 export class BookingsResolver {
   constructor(
@@ -41,6 +42,18 @@ export class BookingsResolver {
   @Query(() => [Booking], { name: 'bookings' })
   findAll(@Args() args: FindManyBookingArgs) {
     return this.bookingsService.findAll(args);
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Booking], { name: 'bookingsForCustomer' })
+  bookingsForCustomer(
+    @Args() args: FindManyBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    return this.bookingsService.findAll({
+      ...args,
+      where: { ...args.where, customerId: { equals: user.uid } },
+    });
   }
 
   @AllowAuthenticated('manager', 'admin')
@@ -124,6 +137,13 @@ export class BookingsResolver {
   customer(@Parent() booking: Booking) {
     return this.prisma.customer.findFirst({
       where: { uid: booking.customerId },
+    });
+  }
+
+  @ResolveField(() => [BookingTimeline])
+  bookingTimeline(@Parent() booking: Booking) {
+    return this.prisma.bookingTimeline.findMany({
+      where: { bookingId: booking.id },
     });
   }
 

@@ -1,7 +1,8 @@
 import { ApolloProvider } from "@parknest/network/src/config/apollo";
+import { Container } from "@parknest/ui/app/components/atoms/Container";
 import { SessionProvider } from "@parknest/ui/app/components/molecules/SessionProvider";
-import { Header } from "@parknest/ui/app/components/organisms/Header";
 import { ToastContainer } from "@parknest/ui/app/components/molecules/Toast";
+import { Header } from "@parknest/ui/app/components/organisms/Header";
 import "@parknest/ui/app/globals.css";
 import { MenuItem } from "@parknest/util/types";
 import type { Metadata } from "next";
@@ -41,7 +42,7 @@ export default function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-25`}
           >
             <Header menuItems={MENUITEMS} />
-            {children}
+            <Container>{children}</Container>
             <ToastContainer />
           </body>
         </ApolloProvider>
