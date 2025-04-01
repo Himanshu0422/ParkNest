@@ -238,7 +238,6 @@ query BookingsForCustomer(
 }
 
 query BookingsForGarage(
-  $garageId: Float!
   $skip: Float
   $take: Float
   $cursor: BookingWhereUniqueInput
@@ -247,7 +246,6 @@ query BookingsForGarage(
   $distinct: [BookingScalarFieldEnum!]
 ) {
   bookingsForGarage(
-    garageId: $garageId
     skip: $skip
     take: $take
     cursor: $cursor
@@ -275,4 +273,42 @@ mutation createBookingTimeline(
     status
     timestamp
   }
+}
+
+query ValetMe {
+  valetMe {
+    uid
+    companyId
+  }
+}
+mutation CreateValet($createValetInput: CreateValetInput!) {
+  createValet(createValetInput: $createValetInput) {
+    uid
+  }
+}
+query companyValets(
+  $distinct: [ValetScalarFieldEnum!]
+  $skip: Float
+  $take: Float
+  $cursor: ValetWhereUniqueInput
+  $orderBy: [ValetOrderByWithRelationInput!]
+  $where: ValetWhereInput
+) {
+  companyValets(
+    distinct: $distinct
+    skip: $skip
+    take: $take
+    cursor: $cursor
+    orderBy: $orderBy
+    where: $where
+  ) {
+    displayName
+    uid
+    createdAt
+    updatedAt
+    companyId
+    image
+    licenceID
+  }
+  companyValetsTotal(where: $where)
 }
