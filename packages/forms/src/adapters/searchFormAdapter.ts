@@ -4,7 +4,11 @@ import {
 } from "@parknest/network/src/gql/generated";
 import { useDebounce } from "@parknest/util/hooks/async";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FieldNamesMarkedBoolean, useFormContext } from "react-hook-form";
+import {
+  FieldNamesMarkedBoolean,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { FormTypeSearchGarage } from "../searchGarages";
 import { intFilter } from "./util";
 
@@ -35,13 +39,13 @@ export const useConvertSearchFormToVariables = () => {
     watch,
   } = useFormContext<FormTypeSearchGarage>();
 
-  const formData = watch();
+  const formData = useWatch<FormTypeSearchGarage>();
   const debouncedFormData = useDebounce(formData, 1000);
 
   const newVariables = useMemo(() => {
     const {
-      endTime,
-      startTime,
+      endTime = "",
+      startTime = "",
       locationFilter,
       length,
       width,
@@ -59,6 +63,8 @@ export const useConvertSearchFormToVariables = () => {
       end: endTime,
     };
 
+    const { ne_lat = 0, ne_lng = 0, sw_lat = 0, sw_lng = 0 } = locationFilter;
+
     const slotsFilter = createSlotsFilter(dirtyFields, {
       length,
       width,
@@ -71,7 +77,7 @@ export const useConvertSearchFormToVariables = () => {
 
     return {
       dateFilter,
-      locationFilter,
+      locationFilter: { ne_lat, ne_lng, sw_lat, sw_lng },
       ...(Object.keys(slotsFilter).length && {
         slotsFilter: slotsFilter as SlotWhereInput,
       }),

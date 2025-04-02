@@ -8,14 +8,12 @@ import { Panel } from "../map/Panel";
 import { GarageMarker } from "./GarageMarker";
 
 export const ShowGarages = () => {
-  const [searchGarages, { data, loading }] = useLazyQuery(
+  const { variables } = useConvertSearchFormToVariables();
+
+  const [searchGarages, { loading, data }] = useLazyQuery(
     SearchGaragesDocument,
-    {
-      fetchPolicy: "network-only",
-    },
   );
 
-  const { variables } = useConvertSearchFormToVariables();
   useEffect(() => {
     if (variables)
       searchGarages({
